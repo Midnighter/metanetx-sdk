@@ -1,0 +1,16 @@
+title = "Configuration for the MetaNetX FTP server interactions."
+latest = "3.2"
+
+[ftp]
+host = "ftp.vital-it.ch"
+base_directory = "databases/metanetx/MNXref/"
+files = [
+    "README.md",
+    "chem_prop.tsv",
+    "chem_xref.tsv",
+    "comp_prop.tsv",
+    "comp_xref.tsv",
+    "reac_prop.tsv",
+    "reac_xref.tsv",
+]
+
