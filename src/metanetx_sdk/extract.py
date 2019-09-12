@@ -16,13 +16,34 @@
 """Extract the MetaNetX data tables."""
 
 
+from importlib.resources import open_text
 from pathlib import Path
 from typing import List
 
 import pandas as pd
 
+from . import data
 
-def extract_table(filename: Path, columns: List[str]) -> pd.DataFrame:
+
+def extract_chemical_registry_mapping():
+    with open_text(data, "chem_registry.tsv") as handle:
+        mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
+    return mapping
+
+
+def extract_compartment_registry_mapping():
+    with open_text(data, "comp_registry.tsv") as handle:
+        mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
+    return mapping
+
+
+def extract_reaction_registry_mapping():
+    with open_text(data, "reac_registry.tsv") as handle:
+        mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
+    return mapping
+
+
+def extract_table(filename: Path, columns: List[str], skip: int) -> pd.DataFrame:
     """
     Extract tabular MetaNetX data.
 
@@ -35,10 +56,12 @@ def extract_table(filename: Path, columns: List[str]) -> pd.DataFrame:
         The filesystem location of the table.
     columns : list of str
         The column headers to use for this table.
+    skip : int
+        The number of initial lines in the file to skip.
 
     Returns
     -------
     pandas.DataFrame
 
     """
-    return pd.read_csv(filename, sep="\t", comment="#", header=None, names=columns)
+    return pd.read_csv(filename, sep="\t", header=None, names=columns, skiprows=skip)

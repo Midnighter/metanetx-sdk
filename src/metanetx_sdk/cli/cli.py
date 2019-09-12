@@ -16,17 +16,16 @@
 import asyncio
 import logging
 from datetime import datetime
-from importlib.resources import open_text
 from os.path import isfile, join
 
 import click
 import click_log
-import pandas as pd
 import pytz
 from dateutil import parser
 
-from . import data, extract, ftp, transform
-from .model import FTPConfigurationModel, TableConfigurationModel
+from .. import ftp
+from ..model import FTPConfigurationModel
+from .process import process
 
 
 logging.config.dictConfig(
@@ -48,6 +47,9 @@ logger = logging.getLogger("metanetx_sdk")
 click_log.basic_config(logger)
 
 
+OUTPUT_ATTR = {"sep": "\t", "index": False, "header": True}
+
+
 @click.group()
 @click.help_option("--help", "-h")
 @click_log.simple_verbosity_option(
@@ -57,14 +59,15 @@ click_log.basic_config(logger)
     type=click.Choice(["CRITICAL", "ERROR", "WARN", "INFO", "DEBUG"]),
 )
 def cli():
-    """Command line interface to update MetaNetX data.."""
+    """Command line interface to update MetaNetX data."""
     pass
 
 
 @cli.command()
+@click.help_option("--help", "-h")
 @click.argument(
     "working_dir",
-    metavar="<METANETX PATH>",
+    metavar="<METANETX DIRECTORY>",
     type=click.Path(exists=True, file_okay=False, writable=True),
 )
 def update(working_dir):
@@ -75,7 +78,7 @@ def update(working_dir):
         with open(last) as file_handle:
             last_checked = parser.parse(file_handle.read().strip())
     else:
-        last_checked = datetime.fromordinal(1)
+        last_checked = datetime.fromordinal(1).replace(tzinfo=zurich_tz)
     logger.info("Updating MetaNetX content.")
     config = FTPConfigurationModel.load()
     loop = asyncio.get_event_loop()
@@ -86,3 +89,5 @@ def update(working_dir):
     with open(last, "w") as file_handle:
         file_handle.write(datetime.now(zurich_tz).isoformat())
 
+
+cli.add_command(process)

@@ -14,3 +14,60 @@ files = [
     "reac_xref.tsv",
 ]
 
+["3.2".chem_prop]
+columns = [
+    "mnx_id",
+    "description",
+    "formula",
+    "charge",
+    "mass",
+    "inchi",
+    "smiles",
+    "source",
+    "inchi_key",
+]
+skip = 386
+
+["3.2".chem_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "evidence",
+    "description",
+]
+skip = 386
+
+["3.2".comp_prop]
+columns = [
+    "mnx_id",
+    "description",
+    "source",
+]
+skip = 386
+
+["3.2".comp_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "description",
+]
+skip = 386
+
+["3.2".reac_prop]
+columns = [
+    "mnx_id",
+    "equation",
+    "description",
+    "is_balanced",
+    "ec_number",
+    "source",
+]
+skip = 386
+
+["3.2".reac_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "description",
+]
+skip = 386
