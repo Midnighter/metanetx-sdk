@@ -26,29 +26,41 @@ from pydantic import BaseModel
 from .. import data
 
 
-class CustomPath(PurePosixPath):
+class FTPPath(PurePosixPath):
+    """Define an FTP path data type."""
+
     @classmethod
     def __get_validators__(cls):
+        """
+        Follow the pydantic guide for custom types.
+
+        See https://pydantic-docs.helpmanual.io/#custom-data-types
+
+        """
         yield cls.validate
 
     @classmethod
-    def validate(cls, value):
+    def validate(cls, value: str) -> PurePosixPath:
+        """Transform the given path string into an object."""
         return PurePosixPath(value)
 
 
 class FTPConfigurationModel(BaseModel):
+    """Define the FTP configuration data model."""
 
     host: str
-    base_directory: CustomPath
+    base_directory: FTPPath
     files: List[str]
     version: str
 
     @property
-    def directory(self):
-        return self.base_directory.joinpath(self.version)
+    def directory(self) -> PurePosixPath:
+        """Return the compound working directory for the FTP server."""
+        return self.base_directory / self.version
 
     @classmethod
-    def load(cls, version: Optional[str] = None):
+    def load(cls, version: Optional[str] = None) -> "FTPConfigurationModel":
+        """Load the packaged FTP configuration."""
         with open_text(data, "metanetx.toml") as handle:
             obj = toml.load(handle)
         if version is None:
