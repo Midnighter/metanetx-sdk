@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 OUTPUT_OPTIONS = {"sep": "\t", "index": False, "header": True}
+ZURICH_TIME = pytz.timezone("Europe/Zurich")
 
 
 def pull(
@@ -40,7 +41,7 @@ def pull(
     files: List[Path] = None,
     configuration: FTPConfigurationModel = None,
     last_checked: datetime = None,
-    server_tz=pytz.timezone("Europe/Zurich"),
+    server_tz=ZURICH_TIME,
     compress: bool = True,
 ) -> datetime:
     """
