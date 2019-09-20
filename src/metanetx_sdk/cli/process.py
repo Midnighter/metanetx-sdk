@@ -13,6 +13,9 @@
 # limitations under the License.
 
 
+"""Provide MetaNetX table processing commands."""
+
+
 import logging
 from pathlib import Path
 
@@ -28,6 +31,7 @@ logger = logging.getLogger(__name__)
 @click.group()
 @click.help_option("--help", "-h")
 def process():
+    """Subcommand for processing MetaNetX tables."""
     pass
 
 
