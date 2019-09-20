@@ -20,15 +20,19 @@ import asyncio
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import Callable, List, Mapping
 
 import pytz
 
 from . import ftp
-from .model import FTPConfigurationModel
+from .extract import extract_table
+from .model import FTPConfigurationModel, SingleTableConfigurationModel
 
 
 logger = logging.getLogger(__name__)
+
+
+OUTPUT_OPTIONS = {"sep": "\t", "index": False, "header": True}
 
 
 def pull(
@@ -81,3 +85,35 @@ def pull(
     )
     loop.close()
     return pull_on
+
+
+def process_table(
+    filename: Path,
+    output: Path,
+    configuration: SingleTableConfigurationModel,
+    mapping: Mapping,
+    transform: Callable,
+) -> None:
+    """
+    Transform a MetaNetX table and store the processed output.
+
+    Parameters
+    ----------
+    filename : Path
+        The table to extract and transform.
+    output : Path
+        Where to store the processed output.
+    configuration : metanetx_sdk.model.SingleTableConfigurationModel
+        The configuration to use for extracting the specific file.
+    mapping : Mapping
+        A mapping between MetaNetX resources and Identifiers.org registries.
+    transform : Callable
+        The table-specific transformation function to apply.
+
+    """
+    logger.info("Extracting...")
+    data = extract_table(filename, configuration.columns, configuration.skip)
+    logger.info("Transforming...")
+    processed = transform(data, mapping)
+    logger.info("Storing...")
+    processed.to_csv(output, **OUTPUT_OPTIONS)
