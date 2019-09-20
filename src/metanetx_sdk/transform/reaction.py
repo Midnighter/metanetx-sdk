@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 def transform_metanetx_registry(table: pd.DataFrame):
+    """Transform all MetaNetX identifiers."""
     # MetaNetX identifiers themselves have no registry. So we add it.
     mnx_mask = table["accession"].isnull()
     table.loc[mnx_mask, "accession"] = table.loc[mnx_mask, "registry"]
