@@ -26,12 +26,14 @@ from .. import data
 
 
 class SingleTableConfigurationModel(BaseModel):
+    """Describe the configuration needed for a single table."""
 
     columns: List[str]
     skip: int
 
 
 class TableConfigurationModel(BaseModel):
+    """Describe all table configuration models."""
 
     chem_prop: SingleTableConfigurationModel
     chem_xref: SingleTableConfigurationModel
@@ -43,6 +45,7 @@ class TableConfigurationModel(BaseModel):
 
     @classmethod
     def load(cls, version: Optional[str] = None):
+        """Load the configuration from the packaged file."""
         with open_text(data, "metanetx.toml") as handle:
             obj = toml.load(handle)
         if version is None:
