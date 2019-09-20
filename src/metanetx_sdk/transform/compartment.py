@@ -26,16 +26,19 @@ logger = logging.getLogger(__name__)
 
 
 def transform_cell_cycle_ontology_registry(table: pd.DataFrame):
+    """Transform all CCO terms."""
     mask = table["registry"] == "cco"
     table.loc[mask, "accession"] = "CCO:" + table.loc[mask, "accession"]
 
 
 def transform_go_registry(table: pd.DataFrame):
+    """Transform all GO terms."""
     mask = table["registry"] == "go"
     table.loc[mask, "accession"] = "GO:" + table.loc[mask, "accession"]
 
 
 def transform_metanetx_registry(table: pd.DataFrame):
+    """Transform all MetaNetX identifiers."""
     # MetaNetX identifiers themselves have no registry. So we add it.
     mnx_mask = table["accession"].isnull()
     table.loc[mnx_mask, "accession"] = table.loc[mnx_mask, "registry"]
