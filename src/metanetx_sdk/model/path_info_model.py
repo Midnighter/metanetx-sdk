@@ -24,15 +24,18 @@ from pytz import timezone
 
 
 class PathInfoModel(BaseModel):
+    """Describe information found about FTP files."""
 
     type: str
     size: int
     modify: datetime
 
     @validator("modify", pre=True, always=True)
-    def transform_modify(cls, value):
+    def transform_modify(cls, value: str) -> datetime:
+        """Transform the modify string to a datetime object."""
         # Modified time parsing according to https://stackoverflow.com/a/29027386.
         return parser.parse(value)
 
-    def localize(self, local_tz: timezone):
+    def localize(self, local_tz: timezone) -> None:
+        """Convert the modify timestamp into a timezone aware one."""
         self.modify = local_tz.localize(self.modify)
