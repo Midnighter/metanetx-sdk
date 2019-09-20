@@ -26,11 +26,13 @@ logger = logging.getLogger(__name__)
 
 
 def transform_chebi_registry(table: pd.DataFrame):
+    """Transform all ChEBI identifiers."""
     mask = table["registry"] == "chebi"
     table.loc[mask, "accession"] = "CHEBI:" + table.loc[mask, "accession"]
 
 
 def transform_kegg_registry(table: pd.DataFrame):
+    """Transform all KEGG identifiers."""
     registry_mapping = {
         "C": "kegg.compound",
         "D": "kegg.drug",
@@ -48,6 +50,7 @@ def transform_kegg_registry(table: pd.DataFrame):
 
 
 def transform_metanetx_registry(table: pd.DataFrame):
+    """Transform all MetaNetX identifiers."""
     # MetaNetX identifiers themselves have no registry. So we add it.
     mnx_mask = table["accession"].isnull()
     table.loc[mnx_mask, "accession"] = table.loc[mnx_mask, "registry"]
@@ -57,7 +60,7 @@ def transform_metanetx_registry(table: pd.DataFrame):
 def transform_chemical_properties(
     chemicals: pd.DataFrame, registry_mapping: Mapping
 ) -> pd.DataFrame:
-    """Load and transform the MetaNetX chemical cross-references."""
+    """Transform the MetaNetX chemical cross-references."""
     df = chemicals.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
@@ -81,7 +84,7 @@ def transform_chemical_properties(
 def transform_chemical_cross_references(
     references: pd.DataFrame, registry_mapping: Mapping
 ) -> pd.DataFrame:
-    """Load and transform the MetaNetX chemical cross-references."""
+    """Transform the MetaNetX chemical cross-references."""
     df = references.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
