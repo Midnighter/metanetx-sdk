@@ -40,7 +40,7 @@ OUTPUT_ATTR = {"sep": "\t", "index": False, "header": True}
     type=click.Choice(["CRITICAL", "ERROR", "WARN", "INFO", "DEBUG"]),
 )
 def cli():
-    """Command line interface to update MetaNetX data."""
+    """Command line interface for working with MetaNetX data."""
     pass
 
 
@@ -59,6 +59,16 @@ def cli():
 )
 @click.argument("files", metavar="[FILENAME] ...", type=click.Path(), nargs=-1)
 def pull(compress, working_dir, files):
+    """
+    Load missing or outdated files from the MetaNetX FTP server.
+
+    METANETX DIRECTORY is where existing files can be found and new ones should be
+    stored.
+
+    Name any number of FILENAMEs to pull from the FTP server. Can be omitted in
+    order to pull all default files.
+
+    """
     async_logger = logging.getLogger("asyncio")
     async_logger.setLevel(logger.level)
     # The MetaNetX FTP server is in Switzerland but does not support timezones.
