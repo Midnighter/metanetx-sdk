@@ -85,7 +85,7 @@ async def update_file(
             if compress:
                 handle = gzip.open(local_filename, mode="wb")
             else:
-                handle = local_filename.open("w")
+                handle = local_filename.open("wb")
             transferred = 0
             async with client.download_stream(filename) as stream:
                 async for block in stream.iter_by_block():
