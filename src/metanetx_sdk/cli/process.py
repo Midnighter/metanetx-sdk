@@ -35,15 +35,23 @@ def process():
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<CHEM PROP FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def chem_prop(filename, output):
+    """
+    Extract and transform a chemical properties table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
     logger.info("Processing chemical properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_chemical_registry_mapping()
@@ -61,15 +69,23 @@ def chem_prop(filename, output):
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<CHEM XREF FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def chem_xref(filename, output):
+    """
+    Extract and transform a chemical cross-references table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
     logger.info("Processing chemical cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_chemical_registry_mapping()
@@ -87,16 +103,24 @@ def chem_xref(filename, output):
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<COMP PROP FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def comp_prop(filename, output):
-    logger.info("Processing compartment cross-references.")
+    """
+    Extract and transform a compartment properties table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
+    logger.info("Processing compartment properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_compartment_registry_mapping()
     api.process_table(
@@ -113,15 +137,23 @@ def comp_prop(filename, output):
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<COMP XREF FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def comp_xref(filename, output):
+    """
+    Extract and transform a compartment cross-references table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
     logger.info("Processing compartment cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_compartment_registry_mapping()
@@ -139,15 +171,23 @@ def comp_xref(filename, output):
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<REAC PROP FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def reac_prop(filename, output):
+    """
+    Extract and transform a reaction properties table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
     logger.info("Processing reaction properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_reaction_registry_mapping()
@@ -165,15 +205,23 @@ def reac_prop(filename, output):
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
-    metavar="<REAC XREF FILE>",
+    metavar="<INPUT FILE>",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "output",
-    metavar="<PROCESSED FILE>",
+    metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 def reac_xref(filename, output):
+    """
+    Extract and transform a reaction cross-references table.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
     logger.info("Processing reaction cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_reaction_registry_mapping()
