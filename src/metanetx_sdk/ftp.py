@@ -13,11 +13,14 @@
 # limitations under the License.
 
 
+"""Provide functions to interact with the MetaNetX FTP server."""
+
+
 import asyncio
 import gzip
 import logging
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import List
 
 import aioftp
@@ -44,6 +47,7 @@ async def update_file(
     Parameters
     ----------
     host : str
+        The FTP host, for example, ftp.vital-it.ch.
     ftp_directory : pathlib.Path
     path : pathlib.Path
         Working directory where files are searched and stored.
@@ -97,7 +101,7 @@ async def update_file(
 
 async def update_tables(
     host: str,
-    ftp_directory: Path,
+    ftp_directory: PurePosixPath,
     output: Path,
     files: List[Path],
     last_checked: datetime,
@@ -105,16 +109,26 @@ async def update_tables(
     compress: bool,
 ) -> None:
     """
+    Load all given files if newer versions exist.
 
     Parameters
     ----------
-    host
-    ftp_directory
-    output
-    files
-    last_checked
-    local_tz
-    compress
+    host : str
+        The FTP host, for example, ftp.vital-it.ch.
+    ftp_directory : pathlib.PurePosixPath
+        The working directory on the host.
+    output : pathlib.Path
+        The output directory for the files. If a filename of any of the ``files``
+        exists in that directory, it is only overwritten if the one on the host is
+        more recent.
+    files : list of pathlib.Path
+        Pure filenames of files of interest to be loaded from the server.
+    last_checked : datetime.datetime
+        When the local files were last checked.
+    local_tz : pytz.timezone
+        A timezone that the FTP server is in, for example, Europe/Zurich.
+    compress : bool
+        Whether or not to gzip compress downloaded files.
 
     """
     tasks = [
