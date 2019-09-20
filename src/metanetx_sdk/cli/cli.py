@@ -13,6 +13,9 @@
 # limitations under the License.
 
 
+"""Provide a command line interface for working with MetaNetX data."""
+
+
 import logging
 from pathlib import Path
 
