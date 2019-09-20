@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-"""Extract the MetaNetX data tables."""
+"""Provide extraction functions."""
 
 
 from importlib.resources import open_text
@@ -26,18 +26,21 @@ from . import data
 
 
 def extract_chemical_registry_mapping():
+    """Return the packaged chemical registry mapping."""
     with open_text(data, "chem_registry.tsv") as handle:
         mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
     return mapping
 
 
 def extract_compartment_registry_mapping():
+    """Return the packaged compartment registry mapping."""
     with open_text(data, "comp_registry.tsv") as handle:
         mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
     return mapping
 
 
 def extract_reaction_registry_mapping():
+    """Return the packaged reaction registry mapping."""
     with open_text(data, "reac_registry.tsv") as handle:
         mapping = pd.read_csv(handle, sep="\t", index_col="mnx", squeeze=True)
     return mapping
