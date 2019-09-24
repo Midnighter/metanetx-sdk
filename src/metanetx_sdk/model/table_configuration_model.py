@@ -16,6 +16,8 @@
 """Provide an FTP configuration data model."""
 
 
+from __future__ import annotations
+
 from importlib.resources import open_text
 from typing import List, Optional
 
@@ -44,7 +46,7 @@ class TableConfigurationModel(BaseModel):
     version: str
 
     @classmethod
-    def load(cls, version: Optional[str] = None):
+    def load(cls, version: Optional[str] = None) -> TableConfigurationModel:
         """Load the configuration from the packaged file."""
         with open_text(data, "metanetx.toml") as handle:
             obj = toml.load(handle)

@@ -16,6 +16,8 @@
 """Provide an FTP configuration data model."""
 
 
+from __future__ import annotations
+
 from importlib.resources import open_text
 from pathlib import PurePosixPath
 from typing import List, Optional
@@ -59,7 +61,7 @@ class FTPConfigurationModel(BaseModel):
         return self.base_directory / self.version
 
     @classmethod
-    def load(cls, version: Optional[str] = None) -> "FTPConfigurationModel":
+    def load(cls, version: Optional[str] = None) -> FTPConfigurationModel:
         """Load the packaged FTP configuration."""
         with open_text(data, "metanetx.toml") as handle:
             obj = toml.load(handle)
