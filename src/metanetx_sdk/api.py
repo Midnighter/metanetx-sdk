@@ -88,7 +88,7 @@ def pull(
     return pull_on
 
 
-def process_table(
+def etl_table(
     filename: Path,
     output: Path,
     configuration: SingleTableConfigurationModel,
@@ -96,19 +96,19 @@ def process_table(
     transform: Callable,
 ) -> None:
     """
-    Transform a MetaNetX table and store the processed output.
+    Extract, transform, and load a MetaNetX table.
 
     Parameters
     ----------
-    filename : Path
+    filename : pathlib.Path
         The table to extract and transform.
-    output : Path
+    output : pathlib.Path
         Where to store the processed output.
     configuration : metanetx_sdk.model.SingleTableConfigurationModel
         The configuration to use for extracting the specific file.
-    mapping : Mapping
+    mapping : typing.Mapping
         A mapping between MetaNetX resources and Identifiers.org registries.
-    transform : Callable
+    transform : typing.Callable
         The table-specific transformation function to apply.
 
     """
@@ -116,5 +116,5 @@ def process_table(
     data = extract_table(filename, configuration.columns, configuration.skip)
     logger.info("Transforming...")
     processed = transform(data, mapping)
-    logger.info("Storing...")
+    logger.info("Loading...")
     processed.to_csv(output, **OUTPUT_OPTIONS)

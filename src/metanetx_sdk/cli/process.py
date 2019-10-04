@@ -59,7 +59,7 @@ def chem_prop(filename, output):
     logger.info("Processing chemical properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_chemical_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.chem_prop,
@@ -93,7 +93,7 @@ def chem_xref(filename, output):
     logger.info("Processing chemical cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_chemical_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.chem_xref,
@@ -127,7 +127,7 @@ def comp_prop(filename, output):
     logger.info("Processing compartment properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_compartment_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.comp_prop,
@@ -161,7 +161,7 @@ def comp_xref(filename, output):
     logger.info("Processing compartment cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_compartment_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.comp_xref,
@@ -195,7 +195,7 @@ def reac_prop(filename, output):
     logger.info("Processing reaction properties.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_reaction_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.reac_prop,
@@ -229,7 +229,7 @@ def reac_xref(filename, output):
     logger.info("Processing reaction cross-references.")
     config = TableConfigurationModel.load()
     mapping = extract.extract_reaction_registry_mapping()
-    api.process_table(
+    api.etl_table(
         Path(filename),
         Path(output),
         config.reac_xref,
