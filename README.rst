@@ -22,10 +22,6 @@ MetaNetX SDK
    :target: https://travis-ci.org/Midnighter/metanetx-sdk
    :alt: Travis CI
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/Midnighter/metanetx-sdk?branch=master&svg=true
-   :target: https://ci.appveyor.com/project/Midnighter/metanetx-sdk
-   :alt: AppVeyor
-
 .. image:: https://codecov.io/gh/Midnighter/metanetx-sdk/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/Midnighter/metanetx-sdk
    :alt: Codecov
@@ -36,22 +32,7 @@ MetaNetX SDK
 
 Parse and process information from `MetaNetX <https://metanetx.org>`_ for
 `MIRIAM <http://co.mbine.org/standards/miriam>`_ compatibility using the
-`Identifiers.org <http://identifiers.org/>`_ registries.
-
-Usage
-=====
-
-The easiest way to access the processed data is through `quilt <https://quiltdata.com/>`_
-loading the data package ``midnighter/metanetx``.
-
-If you want to go the hard way, you can do so by first `installing <#Install>`_ the
-package and then using the ``metanetx`` command line program.
-
-.. code-block:: console
-
-    metanetx update -h
-
-    metanetx process -h
+`Identifiers.org <http://identifiers.org/>`_ namespaces.
 
 Install
 =======
@@ -61,6 +42,31 @@ It's as simple as:
 .. code-block:: console
 
     pip install metanetx-sdk
+
+Usage
+=====
+
+The authoritative source on how to use the various commands is always accessible via
+the commands' help.
+
+.. code-block:: console
+
+    metanetx -h
+
+Normally you would start by loading the files from the MetaNetX FTP server
+
+.. code-block:: console
+
+    metanetx pull ./data
+
+and then transforming each data table.
+
+.. code-block:: console
+
+    metanetx etl chem-prop ./data/chem_prop.tsv.gz ./data/transformed_chem_prop.tsv.gz
+
+You can also directly use the functions from the ``metanetx_sdk.api`` module.
+
 
 Copyright
 =========
