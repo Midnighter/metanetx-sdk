@@ -30,6 +30,8 @@ MetaNetX SDK
    :target: https://github.com/ambv/black
    :alt: Black
 
+.. summary-start
+
 Parse and process information from `MetaNetX <https://metanetx.org>`_ for
 `MIRIAM <http://co.mbine.org/standards/miriam>`_ compatibility using the
 `Identifiers.org <http://identifiers.org/>`_ namespaces.
@@ -67,10 +69,11 @@ and then transforming each data table.
 
 You can also directly use the functions from the ``metanetx_sdk.api`` module.
 
-
 Copyright
 =========
 
 * Copyright (c) 2019, Moritz E. Beber.
 * Free software distributed under the `Apache Software License 2.0 
   <https://www.apache.org/licenses/LICENSE-2.0>`_.
+
+.. summary-end
