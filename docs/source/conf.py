@@ -13,21 +13,20 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path('.').resolve().parent
+PROJECT_ROOT = Path('.').resolve().parent.parent
 
-sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / 'src'))
 
 # -- Project information -----------------------------------------------------
 
-import metanetx_sdk
+# import metanetx_sdk
 
 project = 'MetaNetX SDK'
 copyright = '2019, Moritz E. Beber'
 author = 'Moritz E. Beber'
 
 # The full version, including alpha/beta/rc tags
-release = metanetx_sdk.__version__
+# release = metanetx_sdk.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -46,7 +45,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -82,10 +81,13 @@ html_context = sphinx_material.get_html_context()
 html_static_path = ['_static']
 
 html_theme_options = {
-    'nav_name': project,
+    'nav_title': project,
+    'nav_links': [
+        {'href': 'reference', 'title': 'API Reference', 'internal': True}
+    ],
     'base_url': 'https://metanetx-sdk.readthedocs.io',
-    'color_primary': '#00927b',
-    'color_accent': '#80c1b7',
+    'color_primary': 'teal',
+    'color_accent': 'light-green',
     'repo_url': 'https://github.com/Midnighter/metanetx-sdk/',
     'repo_name': project,
     'globaltoc_depth': 2,

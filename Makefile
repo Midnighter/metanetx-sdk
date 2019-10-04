@@ -9,6 +9,10 @@ qa:
 	isort --recursive src/metanetx_sdk tests/ setup.py
 	black src/metanetx_sdk tests/ setup.py
 
+## Prepare a release by generating the automatic code documentation.
+release:
+	sphinx-apidoc -f -o docs/source/autogen src/metanetx_sdk
+
 ################################################################################
 # Self Documenting Commands                                                    #
 ################################################################################

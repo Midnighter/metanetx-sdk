@@ -72,7 +72,7 @@ You can also directly use the functions from the ``metanetx_sdk.api`` module.
 Copyright
 =========
 
-* Copyright (c) 2019, Moritz E. Beber.
+* Copyright © 2019, Moritz E. Beber.
 * Free software distributed under the `Apache Software License 2.0 
   <https://www.apache.org/licenses/LICENSE-2.0>`_.
 
