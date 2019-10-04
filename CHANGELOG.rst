@@ -4,7 +4,12 @@ History
 
 Next Release
 ------------
-* Upcoming features and fixes
+
+0.2.2 (2019-10-04)
+------------------
+* Rename command to ``etl``.
+* Make the server timezone part of the configuration object.
+* Add documentation.
 
 0.2.1 (2019-09-21)
 ------------------
