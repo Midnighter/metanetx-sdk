@@ -18,10 +18,12 @@
 
 from __future__ import annotations
 
+import datetime
 from importlib.resources import open_text
 from pathlib import PurePosixPath
 from typing import List, Optional
 
+import pytz
 import toml
 from pydantic import BaseModel
 
@@ -42,9 +44,28 @@ class FTPPath(PurePosixPath):
         yield cls.validate
 
     @classmethod
-    def validate(cls, value: str) -> PurePosixPath:
+    def validate(cls, value: str) -> FTPPath:
         """Transform the given path string into an object."""
-        return PurePosixPath(value)
+        return FTPPath(value)
+
+
+class Timezone(datetime.tzinfo):
+    """Define a timezone custom data type."""
+
+    @classmethod
+    def __get_validators__(cls):
+        """
+        Follow the pydantic guide for custom types.
+
+        See https://pydantic-docs.helpmanual.io/#custom-data-types
+
+        """
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, value: str) -> Timezone:
+        """Transform the given timezone string into an object."""
+        return pytz.timezone(value)
 
 
 class FTPConfigurationModel(BaseModel):
@@ -54,6 +75,7 @@ class FTPConfigurationModel(BaseModel):
     base_directory: FTPPath
     files: List[str]
     version: str
+    timezone: Timezone
 
     @property
     def directory(self) -> PurePosixPath:

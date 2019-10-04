@@ -13,6 +13,7 @@ files = [
     "reac_prop.tsv",
     "reac_xref.tsv",
 ]
+timezone = "Europe/Zurich"
 
 ["3.2".chem_prop]
 columns = [

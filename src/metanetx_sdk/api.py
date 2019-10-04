@@ -22,8 +22,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Callable, List, Mapping
 
-import pytz
-
 from . import ftp
 from .extract import extract_table
 from .model import FTPConfigurationModel, SingleTableConfigurationModel
@@ -33,7 +31,6 @@ logger = logging.getLogger(__name__)
 
 
 OUTPUT_OPTIONS = {"sep": "\t", "index": False, "header": True}
-ZURICH_TIME = pytz.timezone("Europe/Zurich")
 
 
 def pull(
@@ -41,37 +38,43 @@ def pull(
     files: List[Path] = None,
     configuration: FTPConfigurationModel = None,
     last_checked: datetime = None,
-    server_tz=ZURICH_TIME,
     compress: bool = True,
 ) -> datetime:
     """
-    Pull in changes from one or more files from the MetaNetX FTP server.
+    Pull in changes to one or more files from the MetaNetX FTP server.
 
     Parameters
     ----------
     directory : pathlib.Path
         The working directory where files are updated.
-    files : list of pathlib.Path
-    configuration
-    last_checked
-    server_tz
-    compress
+    files : list of pathlib.Path, optional
+        A list of one or more filenames as they are found on the FTP server
+        (basename only). By default all known files are checked.
+    configuration : metanetx_sdk.model.FTPConfigurationModel, optional
+        Configuration values encoded in an object. A default configuration is provided.
+    last_checked : datetime, optional
+        The time when the files were last checked for updates. By default it is
+        assumed that the files have never been checked before.
+    compress : bool, optional
+        Whether or not to compress the downloaded files with gzip (default True).
 
     Returns
     -------
     datetime
+        The current time (timezone of the FTP server) when files were checked for
+        updates.
 
     """
     if last_checked is None:
         logger.info("Pulling new MetaNetX content.")
-        last_checked = datetime.fromordinal(1).replace(tzinfo=server_tz)
+        last_checked = datetime.fromordinal(1).replace(tzinfo=configuration.timezone)
     else:
         logger.info("MetaNetX content last checked on %s.", last_checked.isoformat())
     if configuration is None:
         configuration = FTPConfigurationModel.load()
     if files is None:
         files = configuration.files
-    pull_on = datetime.now(server_tz)
+    pull_on = datetime.now(configuration.timezone)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(
         ftp.update_tables(
@@ -80,7 +83,7 @@ def pull(
             directory,
             [Path(f) for f in files],
             last_checked,
-            server_tz,
+            configuration.timezone,
             compress,
         )
     )

@@ -38,7 +38,7 @@ async def update_file(
     path: Path,
     filename: Path,
     last_checked: datetime,
-    local_tz: timezone,
+    local_timezone: timezone,
     compress: bool = True,
 ) -> None:
     """
@@ -55,7 +55,7 @@ async def update_file(
         The file to retrieve relative to the working directory on the server.
     last_checked : datetime
         The date and time when this script was last run.
-    local_tz : pytz.timezone
+    local_timezone : pytz.timezone
     compress : bool, optional
         Whether or not to gzip the files.
 
@@ -63,7 +63,7 @@ async def update_file(
     async with aioftp.ClientSession(host) as client:
         await client.change_directory(ftp_directory)
         info = PathInfoModel(**await client.stat(filename))
-        info.localize(local_tz)
+        info.localize(local_timezone)
         logger.info(
             f"Remote file '%s' last modified on %s.", filename, info.modify.isoformat()
         )
