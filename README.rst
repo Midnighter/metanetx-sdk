@@ -30,6 +30,10 @@ MetaNetX SDK
    :target: https://github.com/ambv/black
    :alt: Black
 
+.. image:: https://readthedocs.org/projects/metanetx-sdk/badge/?version=latest
+   :target: https://metanetx-sdk.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 .. summary-start
 
 Parse and process information from `MetaNetX <https://metanetx.org>`_ for
