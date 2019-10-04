@@ -23,4 +23,4 @@ __version__ = get_versions()['version']
 del get_versions
 
 
-from metanetx_sdk.helpers import show_versions
+from .helpers import show_versions

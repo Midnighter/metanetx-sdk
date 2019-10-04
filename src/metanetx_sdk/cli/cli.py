@@ -24,7 +24,7 @@ import click_log
 from dateutil import parser
 
 from .. import api
-from .process import process
+from .etl import etl
 
 
 logger = logging.getLogger("metanetx_sdk")
@@ -88,4 +88,4 @@ def pull(compress, working_dir, files):
         file_handle.write(checked_on.isoformat())
 
 
-cli.add_command(process)
+cli.add_command(etl)

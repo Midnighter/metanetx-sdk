@@ -30,12 +30,12 @@ logger = logging.getLogger(__name__)
 
 @click.group()
 @click.help_option("--help", "-h")
-def process():
+def etl():
     """Subcommand for processing MetaNetX tables."""
     pass
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
@@ -69,7 +69,7 @@ def chem_prop(filename, output):
     logger.info("Complete.")
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
@@ -103,7 +103,7 @@ def chem_xref(filename, output):
     logger.info("Complete.")
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
@@ -137,7 +137,7 @@ def comp_prop(filename, output):
     logger.info("Complete.")
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
@@ -171,7 +171,7 @@ def comp_xref(filename, output):
     logger.info("Complete.")
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
@@ -205,7 +205,7 @@ def reac_prop(filename, output):
     logger.info("Complete.")
 
 
-@process.command()
+@etl.command()
 @click.help_option("--help", "-h")
 @click.argument(
     "filename",
