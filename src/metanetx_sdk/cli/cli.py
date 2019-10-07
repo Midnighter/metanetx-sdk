@@ -24,6 +24,7 @@ import click_log
 from dateutil import parser
 
 from .. import api
+from ..model import FTPConfigurationModel
 from .etl import etl
 
 
@@ -55,13 +56,20 @@ def cli():
     show_default=True,
     help="Gzip the pulled in files.",
 )
+@click.option(
+    "--version",
+    type=click.Choice(["3.2"]),
+    default="3.2",
+    show_default=True,
+    help="The MetaNetX release version.",
+)
 @click.argument(
     "working_dir",
     metavar="<METANETX DIRECTORY>",
     type=click.Path(exists=True, file_okay=False, writable=True),
 )
 @click.argument("files", metavar="[FILENAME] ...", type=click.Path(), nargs=-1)
-def pull(compress, working_dir, files):
+def pull(compress, version, working_dir, files):
     """
     Load missing or outdated files from the MetaNetX FTP server.
 
@@ -81,8 +89,9 @@ def pull(compress, working_dir, files):
             last_checked = parser.parse(file_handle.read().strip())
     else:
         last_checked = None
+    config = FTPConfigurationModel.load(version)
     checked_on = api.pull(
-        working_dir, files, last_checked=last_checked, compress=compress
+        working_dir, files, config, last_checked=last_checked, compress=compress
     )
     with last.open("w") as file_handle:
         file_handle.write(checked_on.isoformat())
