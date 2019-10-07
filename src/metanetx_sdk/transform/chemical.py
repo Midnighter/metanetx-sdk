@@ -39,9 +39,7 @@ def transform_kegg_prefix(table: pd.DataFrame):
         "E": "kegg.environ",
         "G": "kegg.glycan",
     }
-    kegg_id_prefix = (
-        table.loc[table["prefix"] == "kegg", "identifier"].str[:1].unique()
-    )
+    kegg_id_prefix = table.loc[table["prefix"] == "kegg", "identifier"].str[:1].unique()
     kegg_mask = table["prefix"] == "kegg"
     for prefix in [str(i) for i in kegg_id_prefix]:
         table.loc[
