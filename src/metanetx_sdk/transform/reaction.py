@@ -25,53 +25,53 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def transform_metanetx_registry(table: pd.DataFrame):
+def transform_metanetx_prefix(table: pd.DataFrame):
     """Transform all MetaNetX identifiers."""
-    # MetaNetX identifiers themselves have no registry. So we add it.
-    mnx_mask = table["accession"].isnull()
-    table.loc[mnx_mask, "accession"] = table.loc[mnx_mask, "registry"]
-    table.loc[mnx_mask, "registry"] = "metanetx.reaction"
+    # MetaNetX identifiers themselves have no prefix. So we add it.
+    mnx_mask = table["identifier"].isnull()
+    table.loc[mnx_mask, "identifier"] = table.loc[mnx_mask, "prefix"]
+    table.loc[mnx_mask, "prefix"] = "metanetx.reaction"
 
 
 def transform_reaction_properties(
-    reactions: pd.DataFrame, registry_mapping: Mapping
+    reactions: pd.DataFrame, prefix_mapping: Mapping
 ) -> pd.DataFrame:
     """Transform the MetaNetX reaction properties."""
     df = reactions.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
-    df[["registry", "accession"]] = df["source"].str.split(":", n=1, expand=True)
+    df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
     # Map all source databases to MIRIAM compliant versions.
-    for registry in df.loc[df["accession"].notnull(), "registry"].unique():
-        if registry in registry_mapping:
-            df.loc[df["registry"] == registry, "registry"] = registry_mapping[registry]
+    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+        if prefix in prefix_mapping:
+            df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", registry
+                "The resource prefix '%s' does not appear in the mapping.", prefix
             )
-    transform_metanetx_registry(df)
+    transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
     return df
 
 
 def transform_reaction_cross_references(
-    references: pd.DataFrame, registry_mapping: Mapping
+    references: pd.DataFrame, prefix_mapping: Mapping
 ) -> pd.DataFrame:
     """Transform the MetaNetX reaction cross-references."""
     df = references.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
-    df[["registry", "accession"]] = df["xref"].str.split(":", n=1, expand=True)
+    df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
     # Map all xref databases to MIRIAM compliant versions.
-    for registry in df.loc[df["accession"].notnull(), "registry"].unique():
-        if registry in registry_mapping:
-            df.loc[df["registry"] == registry, "registry"] = registry_mapping[registry]
+    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+        if prefix in prefix_mapping:
+            df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", registry
+                "The resource prefix '%s' does not appear in the mapping.", prefix
             )
-    transform_metanetx_registry(df)
+    transform_metanetx_prefix(df)
     del df["xref"]
     logger.debug(df.head())
     return df

@@ -25,81 +25,81 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def transform_chebi_registry(table: pd.DataFrame):
+def transform_chebi_prefix(table: pd.DataFrame):
     """Transform all ChEBI identifiers."""
-    mask = table["registry"] == "chebi"
-    table.loc[mask, "accession"] = "CHEBI:" + table.loc[mask, "accession"]
+    mask = table["prefix"] == "chebi"
+    table.loc[mask, "identifier"] = "CHEBI:" + table.loc[mask, "identifier"]
 
 
-def transform_kegg_registry(table: pd.DataFrame):
+def transform_kegg_prefix(table: pd.DataFrame):
     """Transform all KEGG identifiers."""
-    registry_mapping = {
+    prefix_mapping = {
         "C": "kegg.compound",
         "D": "kegg.drug",
         "E": "kegg.environ",
         "G": "kegg.glycan",
     }
     kegg_id_prefix = (
-        table.loc[table["registry"] == "kegg", "accession"].str[:1].unique()
+        table.loc[table["prefix"] == "kegg", "identifier"].str[:1].unique()
     )
-    kegg_mask = table["registry"] == "kegg"
+    kegg_mask = table["prefix"] == "kegg"
     for prefix in [str(i) for i in kegg_id_prefix]:
         table.loc[
-            kegg_mask & table["accession"].str.startswith(prefix), "registry"
-        ] = registry_mapping[prefix]
+            kegg_mask & table["identifier"].str.startswith(prefix), "prefix"
+        ] = prefix_mapping[prefix]
 
 
-def transform_metanetx_registry(table: pd.DataFrame):
+def transform_metanetx_prefix(table: pd.DataFrame):
     """Transform all MetaNetX identifiers."""
-    # MetaNetX identifiers themselves have no registry. So we add it.
-    mnx_mask = table["accession"].isnull()
-    table.loc[mnx_mask, "accession"] = table.loc[mnx_mask, "registry"]
-    table.loc[mnx_mask, "registry"] = "metanetx.chemical"
+    # MetaNetX identifiers themselves have no prefix. So we add it.
+    mnx_mask = table["identifier"].isnull()
+    table.loc[mnx_mask, "identifier"] = table.loc[mnx_mask, "prefix"]
+    table.loc[mnx_mask, "prefix"] = "metanetx.chemical"
 
 
 def transform_chemical_properties(
-    chemicals: pd.DataFrame, registry_mapping: Mapping
+    chemicals: pd.DataFrame, prefix_mapping: Mapping
 ) -> pd.DataFrame:
     """Transform the MetaNetX chemical cross-references."""
     df = chemicals.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
-    df[["registry", "accession"]] = df["source"].str.split(":", n=1, expand=True)
+    df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
     # Map all source databases to MIRIAM compliant versions.
-    for registry in df.loc[df["accession"].notnull(), "registry"].unique():
-        if registry in registry_mapping:
-            df.loc[df["registry"] == registry, "registry"] = registry_mapping[registry]
+    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+        if prefix in prefix_mapping:
+            df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", registry
+                "The resource prefix '%s' does not appear in the mapping.", prefix
             )
-    transform_chebi_registry(df)
-    transform_kegg_registry(df)
-    transform_metanetx_registry(df)
+    transform_chebi_prefix(df)
+    transform_kegg_prefix(df)
+    transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
     return df
 
 
 def transform_chemical_cross_references(
-    references: pd.DataFrame, registry_mapping: Mapping
+    references: pd.DataFrame, prefix_mapping: Mapping
 ) -> pd.DataFrame:
     """Transform the MetaNetX chemical cross-references."""
     df = references.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
-    df[["registry", "accession"]] = df["xref"].str.split(":", n=1, expand=True)
+    df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
     # Map all xref databases to MIRIAM compliant versions.
-    for registry in df.loc[df["accession"].notnull(), "registry"].unique():
-        if registry in registry_mapping:
-            df.loc[df["registry"] == registry, "registry"] = registry_mapping[registry]
+    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+        if prefix in prefix_mapping:
+            df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", registry
+                "The resource prefix '%s' does not appear in the mapping.", prefix
             )
-    transform_chebi_registry(df)
-    transform_kegg_registry(df)
-    transform_metanetx_registry(df)
+    transform_chebi_prefix(df)
+    transform_kegg_prefix(df)
+    transform_metanetx_prefix(df)
     del df["xref"]
     logger.debug(df.head())
     return df

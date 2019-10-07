@@ -58,7 +58,7 @@ def chem_prop(filename, output):
     """
     logger.info("Processing chemical properties.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_chemical_registry_mapping()
+    mapping = extract.extract_chemical_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
@@ -92,7 +92,7 @@ def chem_xref(filename, output):
     """
     logger.info("Processing chemical cross-references.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_chemical_registry_mapping()
+    mapping = extract.extract_chemical_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
@@ -126,7 +126,7 @@ def comp_prop(filename, output):
     """
     logger.info("Processing compartment properties.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_compartment_registry_mapping()
+    mapping = extract.extract_compartment_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
@@ -160,7 +160,7 @@ def comp_xref(filename, output):
     """
     logger.info("Processing compartment cross-references.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_compartment_registry_mapping()
+    mapping = extract.extract_compartment_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
@@ -194,7 +194,7 @@ def reac_prop(filename, output):
     """
     logger.info("Processing reaction properties.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_reaction_registry_mapping()
+    mapping = extract.extract_reaction_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
@@ -228,7 +228,7 @@ def reac_xref(filename, output):
     """
     logger.info("Processing reaction cross-references.")
     config = TableConfigurationModel.load()
-    mapping = extract.extract_reaction_registry_mapping()
+    mapping = extract.extract_reaction_prefix_mapping()
     api.etl_table(
         Path(filename),
         Path(output),
