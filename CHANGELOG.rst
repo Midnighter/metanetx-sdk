@@ -5,6 +5,10 @@ History
 Next Release
 ------------
 
+0.3.1 (2019-10-07)
+------------------
+* Fix configuration being ``None`` in ``pull`` function.
+
 0.3.0 (2019-10-07)
 ------------------
 * Include a MNX release version option.
