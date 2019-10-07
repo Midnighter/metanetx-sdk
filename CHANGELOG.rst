@@ -4,6 +4,9 @@ History
 
 Next Release
 ------------
+
+0.3.0 (2019-10-07)
+------------------
 * Include a MNX release version option.
 * Rename registry to prefix and accession to identifier.
 
