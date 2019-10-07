@@ -20,7 +20,7 @@ import asyncio
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, List, Mapping
+from typing import Callable, List, Mapping, Optional
 
 from . import ftp
 from .extract import extract_table
@@ -35,9 +35,9 @@ OUTPUT_OPTIONS = {"sep": "\t", "index": False, "header": True}
 
 def pull(
     directory: Path,
-    files: List[Path] = None,
-    configuration: FTPConfigurationModel = None,
-    last_checked: datetime = None,
+    files: Optional[List[Path]] = None,
+    configuration: Optional[FTPConfigurationModel] = None,
+    last_checked: Optional[datetime] = None,
     compress: bool = True,
 ) -> datetime:
     """
@@ -65,13 +65,13 @@ def pull(
         updates.
 
     """
+    if configuration is None:
+        configuration = FTPConfigurationModel.load()
     if last_checked is None:
         logger.info("Pulling new MetaNetX content.")
         last_checked = datetime.fromordinal(1).replace(tzinfo=configuration.timezone)
     else:
         logger.info("MetaNetX content last checked on %s.", last_checked.isoformat())
-    if configuration is None:
-        configuration = FTPConfigurationModel.load()
     if files is None:
         files = configuration.files
     pull_on = datetime.now(configuration.timezone)
