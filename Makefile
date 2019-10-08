@@ -1,4 +1,4 @@
-.PHONY: qa
+.PHONY: qa release
 
 ################################################################################
 # COMMANDS                                                                     #
@@ -12,6 +12,9 @@ qa:
 ## Prepare a release by generating the automatic code documentation.
 release:
 	sphinx-apidoc -f -o docs/source/autogen src/metanetx_sdk
+	git add docs/source/autogen
+	git commit -m "docs: generate automatic API reference for $(version)"
+	git tag $(version)
 
 ################################################################################
 # Self Documenting Commands                                                    #
