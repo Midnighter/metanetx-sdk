@@ -5,6 +5,10 @@ History
 Next Release
 ------------
 
+0.3.2 (2019-10-08)
+------------------
+* Distribute the right data files.
+
 0.3.1 (2019-10-07)
 ------------------
 * Fix configuration being ``None`` in ``pull`` function.
