@@ -5,6 +5,10 @@ History
 Next Release
 ------------
 
+0.3.3 (2019-10-15)
+------------------
+* Fix the swisslipid identifiers.
+
 0.3.2 (2019-10-08)
 ------------------
 * Distribute the right data files.
