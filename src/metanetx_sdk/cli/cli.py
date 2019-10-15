@@ -80,8 +80,11 @@ def pull(compress, version, working_dir, files):
     order to pull all default files.
 
     """
+    # Set the log level on relevant non-root loggers.
     async_logger = logging.getLogger("asyncio")
     async_logger.setLevel(logger.level)
+    aioftp_logger = logging.getLogger("aioftp")
+    aioftp_logger.setLevel(logger.level)
     # The MetaNetX FTP server is in Switzerland but does not support timezones.
     last = Path(working_dir) / "last.txt"
     if last.is_file():

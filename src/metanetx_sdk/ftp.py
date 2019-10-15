@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 async def update_file(
     host: str,
-    ftp_directory: Path,
+    ftp_directory: PurePosixPath,
     path: Path,
     filename: Path,
     last_checked: datetime,
