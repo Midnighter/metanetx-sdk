@@ -72,7 +72,7 @@ def pull(
         last_checked = datetime.fromordinal(1).replace(tzinfo=configuration.timezone)
     else:
         logger.info("MetaNetX content last checked on %s.", last_checked.isoformat())
-    if files is None:
+    if not files:
         files = configuration.files
     pull_on = datetime.now(configuration.timezone)
     loop = asyncio.get_event_loop()
