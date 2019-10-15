@@ -79,6 +79,7 @@ def transform_chemical_properties(
                 "The resource prefix '%s' does not appear in the mapping.", prefix
             )
     transform_chebi_prefix(df)
+    transform_swisslipid_prefix(df)
     transform_kegg_prefix(df)
     transform_metanetx_prefix(df)
     del df["source"]
@@ -103,6 +104,7 @@ def transform_chemical_cross_references(
                 "The resource prefix '%s' does not appear in the mapping.", prefix
             )
     transform_chebi_prefix(df)
+    transform_swisslipid_prefix(df)
     transform_kegg_prefix(df)
     transform_metanetx_prefix(df)
     del df["xref"]
