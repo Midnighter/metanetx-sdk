@@ -31,6 +31,13 @@ def transform_chebi_prefix(table: pd.DataFrame):
     table.loc[mask, "identifier"] = "CHEBI:" + table.loc[mask, "identifier"]
 
 
+def transform_swisslipid_prefix(table: pd.DataFrame):
+    """Transform all swisslipid identifiers."""
+    mask = table["prefix"] == "slm"
+    table.loc[mask, "prefix"] = "swisslipid"
+    table.loc[mask, "identifier"] = "SLM:" + table.loc[mask, "identifier"]
+
+
 def transform_kegg_prefix(table: pd.DataFrame):
     """Transform all KEGG identifiers."""
     prefix_mapping = {
