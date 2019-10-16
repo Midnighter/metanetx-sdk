@@ -21,7 +21,7 @@ import gzip
 import logging
 from datetime import datetime
 from pathlib import Path, PurePosixPath
-from typing import List
+from typing import List, Union
 
 import aioftp
 from pytz import timezone
@@ -40,6 +40,7 @@ async def update_file(
     last_checked: datetime,
     local_timezone: timezone,
     compress: bool = True,
+    timeout: Union[float, int, None] = 5,
 ) -> None:
     """
     Retrieve a file from an FTP server if it is newer than a local version.
@@ -58,9 +59,14 @@ async def update_file(
     local_timezone : pytz.timezone
     compress : bool, optional
         Whether or not to gzip the files.
+    timeout : float, int, or None, optional
+        The timeout in seconds for FTP operations (default 5 s). Can be disabled by
+        setting `None`.
 
     """
-    async with aioftp.ClientSession(host) as client:
+    async with aioftp.ClientSession(
+        host, socket_timeout=timeout, path_timeout=timeout
+    ) as client:
         await client.change_directory(ftp_directory)
         info = PathInfoModel(**await client.stat(filename))
         info.localize(local_timezone)
@@ -87,6 +93,7 @@ async def update_file(
             else:
                 handle = local_filename.open("wb")
             transferred = 0
+            # TODO (Moritz): May want to increase the socket timeout here.
             async with client.download_stream(filename) as stream:
                 async for block in stream.iter_by_block():
                     handle.write(block)
