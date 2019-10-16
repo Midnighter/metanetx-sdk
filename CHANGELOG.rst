@@ -5,6 +5,10 @@ History
 Next Release
 ------------
 
+0.3.4 (2019-10-16)
+------------------
+* Introduce a timeout to FTP operations.
+
 0.3.3 (2019-10-15)
 ------------------
 * Fix the swisslipid identifiers.
