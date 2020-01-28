@@ -1,9 +1,9 @@
 ---
 language: python
 os:
-  - linux
+- linux
 python:
-  - "3.8"
+- "3.8"
 
 git:
   depth: 2
@@ -18,12 +18,12 @@ branches:
 
 env:
   global:
-    - GITHUB_REPO=Midnighter/metanetx-sdk
+  - GITHUB_REPO=Midnighter/metanetx-sdk
 
 stages:
-  - test
-  - name: deploy
-    if: tag IS present
+- test
+- name: deploy
+  if: tag IS present
 
 install:
 - pip install --upgrade pip setuptools wheel tox tox-travis
