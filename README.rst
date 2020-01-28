@@ -57,26 +57,26 @@ the commands' help.
 
 .. code-block:: console
 
-    metanetx -h
+    mnx-sdk -h
 
 Normally you would start by loading the files from the MetaNetX FTP server
 
 .. code-block:: console
 
-    metanetx pull ./data
+    mnx-sdk pull ./data
 
 and then transforming each data table.
 
 .. code-block:: console
 
-    metanetx etl chem-prop ./data/chem_prop.tsv.gz ./data/transformed_chem_prop.tsv.gz
+    mnx-sdk etl chem-prop ./data/chem_prop.tsv.gz ./data/transformed_chem_prop.tsv.gz
 
 You can also directly use the functions from the ``metanetx_sdk.api`` module.
 
 Copyright
 =========
 
-* Copyright © 2019, Moritz E. Beber.
+* Copyright © 2019-2020, Moritz E. Beber.
 * Free software distributed under the `Apache Software License 2.0 
   <https://www.apache.org/licenses/LICENSE-2.0>`_.
 
