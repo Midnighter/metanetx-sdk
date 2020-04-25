@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 
 def transform_metanetx_prefix(table: pd.DataFrame):
     """Transform all MetaNetX identifiers."""
+    logger.debug("Transforming MetaNetX identifiers.")
     # MetaNetX identifiers themselves have no prefix. So we add it.
     mnx_mask = table["identifier"].isnull()
     table.loc[mnx_mask, "identifier"] = table.loc[mnx_mask, "prefix"]
@@ -46,9 +47,7 @@ def transform_reaction_properties(
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
@@ -68,9 +67,7 @@ def transform_reaction_cross_references(
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["xref"]
     logger.debug(df.head())
