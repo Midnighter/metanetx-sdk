@@ -53,16 +53,22 @@ def transform_compartment_properties(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
+    namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
+    # Remove those namespaces that we handle specially.
+    if "cco" in namespaces:
+        logger.debug("Transforming Cell Cycle Ontology identifiers.")
+        transform_cell_cycle_ontology_prefix(df)
+        namespaces.remove("cco")
+    if "go" in namespaces:
+        logger.debug("Transforming Gene Ontology identifiers.")
+        transform_go_prefix(df)
+        namespaces.remove("go")
     # Map all source databases to MIRIAM compliant versions.
-    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+    for prefix in namespaces:
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
-    transform_cell_cycle_ontology_prefix(df)
-    transform_go_prefix(df)
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
@@ -77,16 +83,22 @@ def transform_compartment_cross_references(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
+    namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
+    # Remove those namespaces that we handle specially.
+    if "cco" in namespaces:
+        logger.debug("Transforming Cell Cycle Ontology identifiers.")
+        transform_cell_cycle_ontology_prefix(df)
+        namespaces.remove("cco")
+    if "go" in namespaces:
+        logger.debug("Transforming Gene Ontology identifiers.")
+        transform_go_prefix(df)
+        namespaces.remove("go")
     # Map all xref databases to MIRIAM compliant versions.
-    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+    for prefix in namespaces:
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
-    transform_cell_cycle_ontology_prefix(df)
-    transform_go_prefix(df)
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["xref"]
     logger.debug(df.head())
