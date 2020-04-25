@@ -5,9 +5,9 @@ History
 Next Release
 ------------
 
-0.4.0 (2020-04-25)
+0.5.0 (2020-04-25)
 ------------------
-* Maintain deprecation note for downstream processing.
+* Maintain deprecation prefix for downstream processing.
 
 0.3.4 (2019-10-16)
 ------------------
