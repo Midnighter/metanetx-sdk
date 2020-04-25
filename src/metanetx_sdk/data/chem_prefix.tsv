@@ -1,6 +1,7 @@
 mnx	miriam
 bigg	bigg.metabolite
-deprecated	metanetx.chemical
+deprecated	deprecated
+envipath	envipath
 hmdb	hmdb
 lipidmaps	lipidmaps
 metacyc	metacyc.compound

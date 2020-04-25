@@ -70,17 +70,26 @@ def transform_chemical_properties(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
+    namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
+    # Remove those namespaces that we handle specially.
+    if "chebi" in namespaces:
+        logger.debug("Transforming ChEBI identifiers.")
+        transform_chebi_prefix(df)
+        namespaces.remove("chebi")
+    if "slm" in namespaces:
+        logger.debug("Transforming SwissLipids identifiers.")
+        transform_swisslipid_prefix(df)
+        namespaces.remove("slm")
+    if "kegg" in namespaces:
+        logger.debug("Transforming KEGG identifiers.")
+        transform_kegg_prefix(df)
+        namespaces.remove("kegg")
     # Map all source databases to MIRIAM compliant versions.
-    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+    for prefix in namespaces:
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
-    transform_chebi_prefix(df)
-    transform_swisslipid_prefix(df)
-    transform_kegg_prefix(df)
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
@@ -95,17 +104,26 @@ def transform_chemical_cross_references(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
+    namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
+    # Remove those namespaces that we handle specially.
+    if "chebi" in namespaces:
+        logger.debug("Transforming ChEBI identifiers.")
+        transform_chebi_prefix(df)
+        namespaces.remove("chebi")
+    if "slm" in namespaces:
+        logger.debug("Transforming SwissLipids identifiers.")
+        transform_swisslipid_prefix(df)
+        namespaces.remove("slm")
+    if "kegg" in namespaces:
+        logger.debug("Transforming KEGG identifiers.")
+        transform_kegg_prefix(df)
+        namespaces.remove("kegg")
     # Map all xref databases to MIRIAM compliant versions.
-    for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
+    for prefix in namespaces:
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
-            logger.warning(
-                "The resource prefix '%s' does not appear in the mapping.", prefix
-            )
-    transform_chebi_prefix(df)
-    transform_swisslipid_prefix(df)
-    transform_kegg_prefix(df)
+            logger.error("The resource prefix '%s' is unhandled.", prefix)
     transform_metanetx_prefix(df)
     del df["xref"]
     logger.debug(df.head())
