@@ -27,18 +27,21 @@ logger = logging.getLogger(__name__)
 
 def transform_cell_cycle_ontology_prefix(table: pd.DataFrame):
     """Transform all CCO terms."""
+    logger.debug("Transforming Cell Cycle Ontology identifiers.")
     mask = table["prefix"] == "cco"
     table.loc[mask, "identifier"] = "CCO:" + table.loc[mask, "identifier"]
 
 
 def transform_go_prefix(table: pd.DataFrame):
     """Transform all GO terms."""
+    logger.debug("Transforming Gene Ontology identifiers.")
     mask = table["prefix"] == "go"
     table.loc[mask, "identifier"] = "GO:" + table.loc[mask, "identifier"]
 
 
 def transform_metanetx_prefix(table: pd.DataFrame):
     """Transform all MetaNetX identifiers."""
+    logger.debug("Transforming MetaNetX identifiers.")
     # MetaNetX identifiers themselves have no prefix. So we add it.
     mnx_mask = table["identifier"].isnull()
     table.loc[mnx_mask, "identifier"] = table.loc[mnx_mask, "prefix"]
@@ -56,11 +59,9 @@ def transform_compartment_properties(
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "cco" in namespaces:
-        logger.debug("Transforming Cell Cycle Ontology identifiers.")
         transform_cell_cycle_ontology_prefix(df)
         namespaces.remove("cco")
     if "go" in namespaces:
-        logger.debug("Transforming Gene Ontology identifiers.")
         transform_go_prefix(df)
         namespaces.remove("go")
     # Map all source databases to MIRIAM compliant versions.
@@ -86,11 +87,9 @@ def transform_compartment_cross_references(
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "cco" in namespaces:
-        logger.debug("Transforming Cell Cycle Ontology identifiers.")
         transform_cell_cycle_ontology_prefix(df)
         namespaces.remove("cco")
     if "go" in namespaces:
-        logger.debug("Transforming Gene Ontology identifiers.")
         transform_go_prefix(df)
         namespaces.remove("go")
     # Map all xref databases to MIRIAM compliant versions.

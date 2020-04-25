@@ -27,12 +27,14 @@ logger = logging.getLogger(__name__)
 
 def transform_chebi_prefix(table: pd.DataFrame):
     """Transform all ChEBI identifiers."""
+    logger.debug("Transforming ChEBI identifiers.")
     mask = table["prefix"] == "chebi"
     table.loc[mask, "identifier"] = "CHEBI:" + table.loc[mask, "identifier"]
 
 
 def transform_swisslipid_prefix(table: pd.DataFrame):
     """Transform all swisslipid identifiers."""
+    logger.debug("Transforming SwissLipids identifiers.")
     mask = table["prefix"] == "slm"
     table.loc[mask, "prefix"] = "swisslipid"
     table.loc[mask, "identifier"] = "SLM:" + table.loc[mask, "identifier"]
@@ -40,6 +42,7 @@ def transform_swisslipid_prefix(table: pd.DataFrame):
 
 def transform_kegg_prefix(table: pd.DataFrame):
     """Transform all KEGG identifiers."""
+    logger.debug("Transforming KEGG identifiers.")
     prefix_mapping = {
         "C": "kegg.compound",
         "D": "kegg.drug",
@@ -56,6 +59,7 @@ def transform_kegg_prefix(table: pd.DataFrame):
 
 def transform_metanetx_prefix(table: pd.DataFrame):
     """Transform all MetaNetX identifiers."""
+    logger.debug("Transforming MetaNetX identifiers.")
     # MetaNetX identifiers themselves have no prefix. So we add it.
     mnx_mask = table["identifier"].isnull()
     table.loc[mnx_mask, "identifier"] = table.loc[mnx_mask, "prefix"]
@@ -73,15 +77,12 @@ def transform_chemical_properties(
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "chebi" in namespaces:
-        logger.debug("Transforming ChEBI identifiers.")
         transform_chebi_prefix(df)
         namespaces.remove("chebi")
     if "slm" in namespaces:
-        logger.debug("Transforming SwissLipids identifiers.")
         transform_swisslipid_prefix(df)
         namespaces.remove("slm")
     if "kegg" in namespaces:
-        logger.debug("Transforming KEGG identifiers.")
         transform_kegg_prefix(df)
         namespaces.remove("kegg")
     # Map all source databases to MIRIAM compliant versions.
@@ -107,15 +108,12 @@ def transform_chemical_cross_references(
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "chebi" in namespaces:
-        logger.debug("Transforming ChEBI identifiers.")
         transform_chebi_prefix(df)
         namespaces.remove("chebi")
     if "slm" in namespaces:
-        logger.debug("Transforming SwissLipids identifiers.")
         transform_swisslipid_prefix(df)
         namespaces.remove("slm")
     if "kegg" in namespaces:
-        logger.debug("Transforming KEGG identifiers.")
         transform_kegg_prefix(df)
         namespaces.remove("kegg")
     # Map all xref databases to MIRIAM compliant versions.
