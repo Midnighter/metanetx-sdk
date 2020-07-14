@@ -18,4 +18,7 @@
 
 from .ftp_configuration_model import FTPConfigurationModel
 from .path_info_model import PathInfoModel
-from .table_configuration_model import SingleTableConfigurationModel, TableConfigurationModel
+from .table_configuration_model import (
+    SingleTableConfigurationModel,
+    TableConfigurationModel,
+)

@@ -22,7 +22,7 @@ import pytest
 from numpy import linspace
 from pandas import DataFrame, Series
 
-import metanetx_sdk.report as report
+from metanetx_sdk import report
 
 
 LETTERS = sorted(ascii_lowercase)[:5]

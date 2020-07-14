@@ -20,7 +20,7 @@ from typing import Literal
 
 import humanize
 import pandas as pd
-import plotly.graph_objects as go
+from plotly import graph_objects as go
 
 
 __all__ = (

@@ -16,7 +16,7 @@
 """Ensure the expected outcomes of helper functions."""
 
 
-import metanetx_sdk.helpers as helpers
+from metanetx_sdk import helpers
 
 
 def test_show_versions(capsys):
