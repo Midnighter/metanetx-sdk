@@ -6,7 +6,7 @@
 
 ## Apply code quality assurance tools.
 qa:
-	isort --recursive src/metanetx_sdk tests/ setup.py
+	isort src/metanetx_sdk tests/ setup.py
 	black src/metanetx_sdk tests/ setup.py
 
 ## Prepare a release by generating the automatic code documentation.
