@@ -71,7 +71,7 @@ async def update_file(
         info = PathInfoModel(**await client.stat(filename))
         info.localize(local_timezone)
         logger.info(
-            f"Remote file '%s' last modified on %s.", filename, info.modify.isoformat()
+            "Remote file '%s' last modified on %s.", filename, info.modify.isoformat()
         )
         if compress:
             suffixes = filename.suffixes
