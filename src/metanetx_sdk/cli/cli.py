@@ -58,8 +58,8 @@ def cli():
 )
 @click.option(
     "--version",
-    type=click.Choice(["3.2"]),
-    default="3.2",
+    type=click.Choice(["4.1"]),
+    default="4.1",
     show_default=True,
     help="The MetaNetX release version.",
 )
