@@ -1,4 +1,4 @@
 mnx	miriam
-bigg	bigg.compartment
-name	name
-seed	seed
+biggC	bigg.compartment
+mnx	metanetx.compartment
+seedC	seed.compartment
