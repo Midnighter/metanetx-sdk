@@ -36,25 +36,7 @@ def transform_swisslipid_prefix(table: pd.DataFrame):
     """Transform all swisslipid identifiers."""
     logger.debug("Transforming SwissLipids identifiers.")
     mask = table["prefix"] == "slm"
-    table.loc[mask, "prefix"] = "swisslipid"
     table.loc[mask, "identifier"] = "SLM:" + table.loc[mask, "identifier"]
-
-
-def transform_kegg_prefix(table: pd.DataFrame):
-    """Transform all KEGG identifiers."""
-    logger.debug("Transforming KEGG identifiers.")
-    prefix_mapping = {
-        "C": "kegg.compound",
-        "D": "kegg.drug",
-        "E": "kegg.environ",
-        "G": "kegg.glycan",
-    }
-    mask = table["prefix"] == "kegg"
-    id_prefix = table.loc[mask, "identifier"].str[:1].unique()
-    for prefix in [str(i) for i in id_prefix]:
-        table.loc[
-            mask & table["identifier"].str.startswith(prefix), "prefix"
-        ] = prefix_mapping[prefix]
 
 
 def transform_metanetx_prefix(table: pd.DataFrame):
@@ -74,6 +56,8 @@ def transform_chemical_properties(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
+    if (num_missing := df["identifier"].isnull().sum()) > 0:
+        logger.error("There are %d entries without a namespace prefix.", num_missing)
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "chebi" in namespaces:
@@ -82,9 +66,6 @@ def transform_chemical_properties(
     if "slm" in namespaces:
         transform_swisslipid_prefix(df)
         namespaces.remove("slm")
-    if "kegg" in namespaces:
-        transform_kegg_prefix(df)
-        namespaces.remove("kegg")
     # Map all source databases to MIRIAM compliant versions.
     for prefix in namespaces:
         if prefix in prefix_mapping:
@@ -105,6 +86,12 @@ def transform_chemical_cross_references(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
+    if (num_missing := df["identifier"].isnull().sum()) > 0:
+        logger.warning(
+            "There are %d entries without a namespace prefix. Assumed to belong to "
+            "'metanetx.chemical'.",
+            num_missing,
+        )
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "chebi" in namespaces:
@@ -113,9 +100,6 @@ def transform_chemical_cross_references(
     if "slm" in namespaces:
         transform_swisslipid_prefix(df)
         namespaces.remove("slm")
-    if "kegg" in namespaces:
-        transform_kegg_prefix(df)
-        namespaces.remove("kegg")
     # Map all xref databases to MIRIAM compliant versions.
     for prefix in namespaces:
         if prefix in prefix_mapping:
