@@ -15,24 +15,20 @@ MetaNetX SDK
    :alt: Apache Software License Version 2.0
 
 .. image:: https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg
-   :target: https://github.com/Midnighter/metanetx-sdk/blob/master/.github/CODE_OF_CONDUCT.md
+   :target: https://github.com/Midnighter/metanetx-sdk/blob/stable/.github/CODE_OF_CONDUCT.md
    :alt: Code of Conduct
 
-.. image:: https://img.shields.io/travis/Midnighter/metanetx-sdk/master.svg?label=Travis%20CI
-   :target: https://travis-ci.org/Midnighter/metanetx-sdk
-   :alt: Travis CI
+.. image:: https://github.com/Midnighter/metanetx-sdk/workflows/CI-CD/badge.svg
+   :target: https://github.com/Midnighter/metanetx-sdk/workflows/CI-CD
+   :alt: GitHub Actions
 
-.. image:: https://codecov.io/gh/Midnighter/metanetx-sdk/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/Midnighter/metanetx-sdk/branch/stable/graph/badge.svg
    :target: https://codecov.io/gh/Midnighter/metanetx-sdk
    :alt: Codecov
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/ambv/black
-   :alt: Black
-
-.. image:: https://readthedocs.org/projects/metanetx-sdk/badge/?version=latest
-   :target: https://metanetx-sdk.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
+   :alt: Code Style Black
 
 .. summary-start
 

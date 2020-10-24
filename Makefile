@@ -1,9 +1,8 @@
-.PHONY: qa release
-
 ################################################################################
 # COMMANDS                                                                     #
 ################################################################################
 
+.PHONY: qa
 ## Apply code quality assurance tools.
 qa:
 	isort src/metanetx_sdk tests/ setup.py
@@ -12,9 +11,6 @@ qa:
 ## Prepare a release by generating the automatic code documentation.
 release:
 	sphinx-apidoc -f -o docs/source/autogen src/metanetx_sdk
-	git add docs/source/autogen
-	git commit -m "docs: generate automatic API reference for $(version)"
-	git tag $(version)
 
 ################################################################################
 # Self Documenting Commands                                                    #

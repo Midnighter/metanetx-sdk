@@ -1,4 +1,3 @@
 include README.rst
 include LICENSE
-include versioneer.py
 include src/metanetx_sdk/_version.py
