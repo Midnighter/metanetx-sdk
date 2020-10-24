@@ -37,10 +37,13 @@ class SingleTableConfigurationModel(BaseModel):
 class TableConfigurationModel(BaseModel):
     """Describe all table configuration models."""
 
+    chem_depr: SingleTableConfigurationModel
     chem_prop: SingleTableConfigurationModel
     chem_xref: SingleTableConfigurationModel
+    comp_depr: SingleTableConfigurationModel
     comp_prop: SingleTableConfigurationModel
     comp_xref: SingleTableConfigurationModel
+    reac_depr: SingleTableConfigurationModel
     reac_prop: SingleTableConfigurationModel
     reac_xref: SingleTableConfigurationModel
     version: str
