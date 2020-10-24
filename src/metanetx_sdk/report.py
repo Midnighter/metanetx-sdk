@@ -114,7 +114,11 @@ def plot_frequency(
 
     """
     fig = go.Figure()
-    fig.add_trace(go.Histogram(x=series,))
+    fig.add_trace(
+        go.Histogram(
+            x=series,
+        )
+    )
     fig.update_layout(
         xaxis_title_text=xaxis_title,
         yaxis_title_text=yaxis_title,
@@ -151,7 +155,12 @@ def plot_bincount(
 
     """
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=series.index, y=series,))
+    fig.add_trace(
+        go.Bar(
+            x=series.index,
+            y=series,
+        )
+    )
     fig.update_layout(
         xaxis_title_text=xaxis_title,
         yaxis_title_text=yaxis_title,
