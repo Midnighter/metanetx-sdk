@@ -89,4 +89,4 @@ class FTPConfigurationModel(BaseModel):
             obj = toml.load(handle)
         if version is None:
             version = obj["latest"]
-        return cls(version=version, **obj["ftp"])
+        return cls(version=version, **obj[version]["ftp"])
