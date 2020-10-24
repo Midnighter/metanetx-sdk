@@ -1,9 +1,9 @@
 mnx	miriam
-bigg	bigg.reaction
-kegg	kegg.reaction
-metacyc	metacyc.reaction
+biggR	bigg.reaction
+keggR	kegg.reaction
+metacycR	metacyc.reaction
+mnx	metanetx.reaction
 reactome	reactome
-rhea	rhea
-sabiork	sabiork.reaction
-seed	seed.reaction
-deprecated	deprecated
+rheaR	rhea
+sabiorkR	sabiork.reaction
+seedR	seed.reaction

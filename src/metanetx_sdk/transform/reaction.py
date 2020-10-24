@@ -42,13 +42,14 @@ def transform_reaction_properties(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
+    if (num_missing := df["identifier"].isnull().sum()) > 0:
+        logger.error("There are %d entries without a namespace prefix.", num_missing)
     # Map all source databases to MIRIAM compliant versions.
     for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
         if prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)
-    transform_metanetx_prefix(df)
     del df["source"]
     logger.debug(df.head())
     return df
@@ -62,6 +63,12 @@ def transform_reaction_cross_references(
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
+    if (num_missing := df["identifier"].isnull().sum()) > 0:
+        logger.warning(
+            "There are %d entries without a namespace prefix. Assumed to belong to "
+            "'metanetx.reaction'.",
+            num_missing,
+        )
     # Map all xref databases to MIRIAM compliant versions.
     for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
         if prefix in prefix_mapping:
