@@ -52,7 +52,7 @@ def transform_compartment_properties(
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["source"].str.split(":", n=1, expand=True)
     if (num_missing := df["identifier"].isnull().sum()) > 0:
-        logger.warning("There are %d entries without a namespace prefix.", num_missing)
+        logger.error("There are %d entries without a namespace prefix.", num_missing)
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "cco" in namespaces:
@@ -87,7 +87,7 @@ def transform_compartment_cross_references(
     # We split the prefixes so that we know the actual data sources.
     df[["prefix", "identifier"]] = df["xref"].str.split(":", n=1, expand=True)
     if (num_missing := df["identifier"].isnull().sum()) > 0:
-        logger.warning("There are %d entries without a namespace prefix.", num_missing)
+        logger.error("There are %d entries without a namespace prefix.", num_missing)
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
     if "cco" in namespaces:
