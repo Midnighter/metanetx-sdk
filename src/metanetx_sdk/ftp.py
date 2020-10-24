@@ -64,7 +64,7 @@ async def update_file(
         setting `None`.
 
     """
-    async with aioftp.ClientSession(
+    async with aioftp.Client.context(
         host, socket_timeout=timeout, path_timeout=timeout
     ) as client:
         await client.change_directory(ftp_directory)
