@@ -47,6 +47,39 @@ def etl():
     metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
+def chem_depr(filename, output):
+    """
+    Extract and transform a table with deprecated chemical identifiers.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
+    logger.info("Processing deprecated chemical identifiers.")
+    config = TableConfigurationModel.load()
+    logger.info("Extracting...")
+    deprecated = extract.extract_table(
+        Path(filename), config.chem_depr.columns, config.chem_depr.skip
+    )
+    logger.info("Transforming...")
+    logger.info("Loading...")
+    deprecated.to_csv(Path(output), **api.OUTPUT_OPTIONS)
+    logger.info("Complete.")
+
+
+@etl.command()
+@click.help_option("--help", "-h")
+@click.argument(
+    "filename",
+    metavar="<INPUT FILE>",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+)
+@click.argument(
+    "output",
+    metavar="<OUTPUT FILE>",
+    type=click.Path(exists=False, file_okay=True, dir_okay=False),
+)
 def chem_prop(filename, output):
     """
     Extract and transform a chemical properties table.
@@ -115,6 +148,39 @@ def chem_xref(filename, output):
     metavar="<OUTPUT FILE>",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
+def comp_depr(filename, output):
+    """
+    Extract and transform a table with deprecated compartment identifiers.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
+    logger.info("Processing deprecated compartment identifiers.")
+    config = TableConfigurationModel.load()
+    logger.info("Extracting...")
+    deprecated = extract.extract_table(
+        Path(filename), config.comp_depr.columns, config.comp_depr.skip
+    )
+    logger.info("Transforming...")
+    logger.info("Loading...")
+    deprecated.to_csv(Path(output), **api.OUTPUT_OPTIONS)
+    logger.info("Complete.")
+
+
+@etl.command()
+@click.help_option("--help", "-h")
+@click.argument(
+    "filename",
+    metavar="<INPUT FILE>",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+)
+@click.argument(
+    "output",
+    metavar="<OUTPUT FILE>",
+    type=click.Path(exists=False, file_okay=True, dir_okay=False),
+)
 def comp_prop(filename, output):
     """
     Extract and transform a compartment properties table.
@@ -168,6 +234,39 @@ def comp_xref(filename, output):
         mapping,
         transform.transform_compartment_cross_references,
     )
+    logger.info("Complete.")
+
+
+@etl.command()
+@click.help_option("--help", "-h")
+@click.argument(
+    "filename",
+    metavar="<INPUT FILE>",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+)
+@click.argument(
+    "output",
+    metavar="<OUTPUT FILE>",
+    type=click.Path(exists=False, file_okay=True, dir_okay=False),
+)
+def reac_depr(filename, output):
+    """
+    Extract and transform a table with deprecated reaction identifiers.
+
+    INPUT FILE is the path to the raw MetaNetX source table.
+
+    OUTPUT FILE is the path for the transformed table output.
+
+    """
+    logger.info("Processing deprecated compartment identifiers.")
+    config = TableConfigurationModel.load()
+    logger.info("Extracting...")
+    deprecated = extract.extract_table(
+        Path(filename), config.reac_depr.columns, config.reac_depr.skip
+    )
+    logger.info("Transforming...")
+    logger.info("Loading...")
+    deprecated.to_csv(Path(output), **api.OUTPUT_OPTIONS)
     logger.info("Complete.")
 
 

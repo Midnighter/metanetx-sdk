@@ -51,7 +51,7 @@ def transform_metanetx_prefix(table: pd.DataFrame):
 def transform_chemical_properties(
     chemicals: pd.DataFrame, prefix_mapping: Mapping
 ) -> pd.DataFrame:
-    """Transform the MetaNetX chemical cross-references."""
+    """Transform the MetaNetX chemical properties."""
     df = chemicals.copy()
     # Cross references have a prefix.
     # We split the prefixes so that we know the actual data sources.
