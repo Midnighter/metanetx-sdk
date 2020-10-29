@@ -5,6 +5,15 @@ History
 Next Release
 ------------
 
+4.1.1 (2020-10-29)
+------------------
+* Add commands for transforming deprecation tables.
+
+4.1.0 (2020-10-26)
+------------------
+* Adapt the SDK to the MetaNetX 4.1 release.
+* Adjust the release version scheme to follow MetaNetX.
+
 0.5.0 (2020-04-25)
 ------------------
 * Maintain deprecation prefix for downstream processing.
