@@ -1,5 +1,103 @@
 title = "Configuration for the MetaNetX FTP server interactions."
-latest = "4.1"
+latest = "4.2"
+
+["4.2".ftp]
+host = "ftp.vital-it.ch"
+base_directory = "databases/metanetx/MNXref/"
+files = [
+    "README.md",
+    "chem_depr.tsv",
+    "chem_prop.tsv",
+    "chem_xref.tsv",
+    "comp_depr.tsv",
+    "comp_prop.tsv",
+    "comp_xref.tsv",
+    "reac_depr.tsv",
+    "reac_prop.tsv",
+    "reac_xref.tsv",
+]
+timezone = "Europe/Zurich"
+
+["4.2".chem_depr]
+columns = [
+    "deprecated_id",
+    "current_id",
+    "version",
+]
+skip = 348
+
+["4.2".chem_prop]
+columns = [
+    "mnx_id",
+    "name",
+    "source",
+    "formula",
+    "charge",
+    "mass",
+    "inchi",
+    "inchi_key",
+    "smiles",
+]
+skip = 348
+
+["4.2".chem_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "description",
+]
+skip = 348
+
+["4.2".comp_depr]
+columns = [
+    "deprecated_id",
+    "current_id",
+    "version",
+]
+skip = 348
+
+["4.2".comp_prop]
+columns = [
+    "mnx_id",
+    "name",
+    "source",
+]
+skip = 348
+
+["4.2".comp_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "description",
+]
+skip = 348
+
+["4.2".reac_depr]
+columns = [
+    "deprecated_id",
+    "current_id",
+    "version",
+]
+skip = 348
+
+["4.2".reac_prop]
+columns = [
+    "mnx_id",
+    "equation",
+    "source",
+    "ec_number",
+    "is_balanced",
+    "is_transport",
+]
+skip = 348
+
+["4.2".reac_xref]
+columns = [
+    "xref",
+    "mnx_id",
+    "description",
+]
+skip = 348
 
 ["4.1".ftp]
 host = "ftp.vital-it.ch"
