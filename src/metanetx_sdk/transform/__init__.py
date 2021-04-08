@@ -19,3 +19,4 @@
 from .chemical import *
 from .compartment import *
 from .reaction import *
+from .helpers import transform_deprecated_identifiers
