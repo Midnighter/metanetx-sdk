@@ -21,6 +21,8 @@ from typing import Mapping
 
 import pandas as pd
 
+from .helpers import drop_namespace
+
 
 logger = logging.getLogger(__name__)
 
@@ -28,14 +30,16 @@ logger = logging.getLogger(__name__)
 def transform_chebi_prefix(table: pd.DataFrame):
     """Transform all ChEBI identifiers."""
     logger.debug("Transforming ChEBI identifiers.")
-    mask = table["prefix"] == "chebi"
+    mask = table["prefix"].str.lower() == "chebi"
+    table.loc[mask, "prefix"] = "chebi"
     table.loc[mask, "identifier"] = "CHEBI:" + table.loc[mask, "identifier"]
 
 
 def transform_swisslipid_prefix(table: pd.DataFrame):
     """Transform all swisslipid identifiers."""
     logger.debug("Transforming SwissLipids identifiers.")
-    mask = table["prefix"] == "slm"
+    mask = table["prefix"].str.lower() == "slm"
+    table.loc[mask, "prefix"] = "slm"
     table.loc[mask, "identifier"] = "SLM:" + table.loc[mask, "identifier"]
 
 
@@ -60,15 +64,20 @@ def transform_chemical_properties(
         logger.error("There are %d entries without a namespace prefix.", num_missing)
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
-    if "chebi" in namespaces:
+    if "chebi" in namespaces or "CHEBI" in namespaces:
         transform_chebi_prefix(df)
-        namespaces.remove("chebi")
-    if "slm" in namespaces:
+        drop_namespace(namespaces, "chebi")
+        drop_namespace(namespaces, "CHEBI")
+    if "slm" in namespaces or "SLM" in namespaces:
         transform_swisslipid_prefix(df)
-        namespaces.remove("slm")
+        drop_namespace(namespaces, "slm")
+        drop_namespace(namespaces, "SLM")
     # Map all source databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in namespaces:
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)
@@ -94,15 +103,20 @@ def transform_chemical_cross_references(
         )
     namespaces = set(df.loc[df["identifier"].notnull(), "prefix"].unique())
     # Remove those namespaces that we handle specially.
-    if "chebi" in namespaces:
+    if "chebi" in namespaces or "CHEBI" in namespaces:
         transform_chebi_prefix(df)
-        namespaces.remove("chebi")
-    if "slm" in namespaces:
+        drop_namespace(namespaces, "chebi")
+        drop_namespace(namespaces, "CHEBI")
+    if "slm" in namespaces or "SLM" in namespaces:
         transform_swisslipid_prefix(df)
-        namespaces.remove("slm")
+        drop_namespace(namespaces, "slm")
+        drop_namespace(namespaces, "SLM")
     # Map all xref databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in namespaces:
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)

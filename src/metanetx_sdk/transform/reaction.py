@@ -21,6 +21,8 @@ from typing import Mapping
 
 import pandas as pd
 
+from .helpers import drop_namespace
+
 
 logger = logging.getLogger(__name__)
 
@@ -45,8 +47,11 @@ def transform_reaction_properties(
     if (num_missing := df["identifier"].isnull().sum()) > 0:
         logger.error("There are %d entries without a namespace prefix.", num_missing)
     # Map all source databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)
@@ -70,8 +75,11 @@ def transform_reaction_cross_references(
             num_missing,
         )
     # Map all xref databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in df.loc[df["identifier"].notnull(), "prefix"].unique():
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)

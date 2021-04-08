@@ -21,6 +21,8 @@ from typing import Mapping
 
 import pandas as pd
 
+from .helpers import drop_namespace
+
 
 logger = logging.getLogger(__name__)
 
@@ -33,13 +35,15 @@ def transform_cell_cycle_ontology_prefix(table: pd.DataFrame):
 
 def transform_gene_ontology_prefix(table: pd.DataFrame):
     """Transform all GO terms."""
-    mask = table["prefix"] == "go"
+    mask = table["prefix"].str.lower() == "go"
+    table.loc[mask, "prefix"] = "go"
     table.loc[mask, "identifier"] = "GO:" + table.loc[mask, "identifier"]
 
 
 def transform_cell_type_ontology_prefix(table: pd.DataFrame):
     """Transform all CL terms."""
-    mask = table["prefix"] == "cl"
+    mask = table["prefix"].str.lower() == "cl"
+    table.loc[mask, "prefix"] = "cl"
     table.loc[mask, "identifier"] = "CL:" + table.loc[mask, "identifier"]
 
 
@@ -58,18 +62,23 @@ def transform_compartment_properties(
     if "cco" in namespaces:
         logger.debug("Transforming Cell Cycle Ontology terms.")
         transform_cell_cycle_ontology_prefix(df)
-        namespaces.remove("cco")
-    if "go" in namespaces:
+        drop_namespace(namespaces, "cco")
+    if "go" in namespaces or "GO" in namespaces:
         logger.debug("Transforming Gene Ontology terms.")
         transform_gene_ontology_prefix(df)
-        namespaces.remove("go")
-    if "cl" in namespaces:
+        drop_namespace(namespaces, "go")
+        drop_namespace(namespaces, "GO")
+    if "cl" in namespaces or "CL" in namespaces:
         logger.debug("Transforming Cell Type Ontology terms.")
         transform_cell_type_ontology_prefix(df)
-        namespaces.remove("cl")
+        drop_namespace(namespaces, "cl")
+        drop_namespace(namespaces, "CL")
     # Map all source databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in namespaces:
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)
@@ -97,14 +106,19 @@ def transform_compartment_cross_references(
     if "go" in namespaces:
         logger.debug("Transforming Gene Ontology terms.")
         transform_gene_ontology_prefix(df)
-        namespaces.remove("go")
+        drop_namespace(namespaces, "go")
+        drop_namespace(namespaces, "GO")
     if "cl" in namespaces:
         logger.debug("Transforming Cell Type Ontology terms.")
         transform_cell_type_ontology_prefix(df)
-        namespaces.remove("cl")
+        drop_namespace(namespaces, "cl")
+        drop_namespace(namespaces, "CL")
     # Map all xref databases to MIRIAM compliant versions.
+    miriam_prefixes = set(prefix_mapping)
     for prefix in namespaces:
-        if prefix in prefix_mapping:
+        if prefix in miriam_prefixes:
+            logger.info("Nothing to be done for '%s'.", prefix)
+        elif prefix in prefix_mapping:
             df.loc[df["prefix"] == prefix, "prefix"] = prefix_mapping[prefix]
         else:
             logger.error("The resource prefix '%s' is unhandled.", prefix)
