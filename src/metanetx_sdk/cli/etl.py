@@ -130,7 +130,7 @@ def chem_depr(filename, output):
     api.etl_table(
         Path(filename),
         Path(output),
-        config.chem_xref,
+        config.chem_depr,
         mapping,
         transform.transform_deprecated_identifiers,
     )
@@ -232,7 +232,7 @@ def comp_depr(filename, output):
     api.etl_table(
         Path(filename),
         Path(output),
-        config.chem_xref,
+        config.chem_depr,
         mapping,
         transform.transform_deprecated_identifiers,
     )
@@ -334,7 +334,7 @@ def reac_depr(filename, output):
     api.etl_table(
         Path(filename),
         Path(output),
-        config.chem_xref,
+        config.chem_depr,
         mapping,
         transform.transform_deprecated_identifiers,
     )
