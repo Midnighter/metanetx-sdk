@@ -5,6 +5,11 @@ History
 Next Release
 ------------
 
+4.2.0 (2021-09-26)
+------------------
+* Adjust versioning scheme to match MetaNetX major and minor version.
+* Adjust package for 4.2 release.
+
 0.5.0 (2020-04-25)
 ------------------
 * Maintain deprecation prefix for downstream processing.
