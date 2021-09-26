@@ -21,8 +21,6 @@ from typing import Mapping
 
 import pandas as pd
 
-from .helpers import drop_namespace
-
 
 logger = logging.getLogger(__name__)
 
